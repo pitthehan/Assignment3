@@ -20,19 +20,14 @@
 {
     [super viewDidLoad];
     
-    self.title = @"Bluth's Banana Stand";
+    self.title = @"He Han's Banana Stand";
     
     _allSelected = NO;
     
     _cart = [NSMutableArray arrayWithCapacity:0];
     
     for(int i = 0; i < 50; i++){
-        NSString * fruitName = [NSString stringWithFormat:@"Banana %d", i];
-        
-        if((i % 10) == 0){
-            fruitName = [NSString stringWithFormat:@"Free Banana %d", i];
-        }
-        
+        NSString * fruitName = [NSString stringWithFormat:@"Banana %d", (i+1)];
         Fruit * anonFruit = [[Fruit alloc] initWithWithName:fruitName andColor:@"Yellow" andShape:@"Curved"];
         anonFruit.url = @"http://en.m.wikipedia.org/wiki/Banana";
         [_cart addObject:anonFruit];
@@ -64,13 +59,26 @@
 //Should remove all of the fruit in the cart.
 -(IBAction)removeAllFruitInCart:(id)sender
 {
-    
+    if([_cart count] > 0)
+    {
+    [_cart removeAllObjects];
+    [_cartView reloadData]; }
 }
 
 //should add 50 bananas to the cart and display them!
 -(IBAction)fillCartWithBananas:(id)sender
 {
-    
+      int x = [_cart count];
+      int y = 0;
+      y = x+50;
+      for(int i = x; i < y; i++)
+        {
+        NSString * fruitName = [NSString stringWithFormat:@"Banana %d", (i+1)];
+        Fruit * anonFruit = [[Fruit alloc] initWithWithName:fruitName andColor:@"Yellow" andShape:@"Curved"];
+        anonFruit.url = @"http://en.m.wikipedia.org/wiki/Banana";
+        [_cart addObject:anonFruit];
+        }
+        [_cartView reloadData];
 }
 
 
@@ -88,6 +96,10 @@
 
 -(int) tableView:(UITableView *)tableView numberOfRowsInSection:(NSInteger)section
 {
+    if([_cart count] == 0){
+    return 1;
+    }
+    
     return [_cart count];
 }
 
@@ -129,6 +141,7 @@
     detailView.url = selectedFruit.url;
     
     [self.navigationController pushViewController:detailView animated:YES];
+    
 }
 
 @end
